@@ -1,0 +1,136 @@
+<html>
+<head>
+<style>
+#container {
+	min-width: 320px;
+	max-width: 800px;
+	margin: 0 auto;
+}
+</style>
+</head>
+
+<body>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/networkgraph.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<div id="container"></div>
+ <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+
+
+
+<div id="container"></div>
+  <script src="https://code.highcharts.com/highcharts.src.js"></script>
+  <script src="https://code.highcharts.com/modules/networkgraph.js"></script>
+  {% block javascript %}
+  <script type='text/javascript'>
+  $(document).ready(function(){
+    $.ajax({
+          method: "GET",
+          url : "http://localhost:8000/chartapi",
+          success: function(result){
+              Highcharts.chart('container', {
+    chart: {
+        height: '100%',
+        color: 'fffff',
+        type: 'networkgraph',
+        plotBorderWidth: 3
+    },
+    title: {
+        text: 'Amboss Network Graph'
+    },
+    plotOptions: {
+        networkgraph: {
+            layoutAlgorithm: {
+                enableSimulation: true,
+                linkLength:100,
+                integration: 'verlet',
+                approximation: 'barnes-hut',
+                theta:0.7,
+                gravitationalConstant: 0.7,
+                keys: ['from', 'to']
+            }
+            
+        }
+    },
+    series: [{
+        link:{color: '#333333'},
+        marker:{radius: 7},
+        color: '#f96c63',
+        dataLables:{
+            enabled: true,
+            linkFormat: function(){
+                return '';
+            }
+        },
+        id: 'Alphabet',
+        layoutAlgorithm: {
+            enableSimulation: true,
+            initialPositions: function () {
+                var chart = this.series[0].chart,
+                    width = chart.plotWidth,
+                    height = chart.plotHeight;
+
+                this.nodes.forEach(function (node) {
+                    node.plotX = node.plotX === undefined ?
+                        Math.random() * width : node.plotX;
+                    node.plotY = node.plotY === undefined ?
+                        Math.random() * height : node.plotY;
+                });
+            }
+        },
+        name: 'Amboss',
+        data:[ 
+            ['A', 'B'],
+            ['A', 'C'],
+            ['A', 'D'],
+            ['A', 'E'],
+            ['A', 'F'],
+            ['A', 'G'],
+
+            ['B', 'C'],
+            ['B', 'D'],
+            ['B', 'G'],
+            ['B', 'G'],
+            ['B', 'G'],
+
+            ['C', 'D'],
+            ['C', 'E'],
+            ['C', 'F'],
+            ['C', 'G'],
+
+            ['D', 'E'],
+            ['D', 'D'],
+            ['D', 'G'],
+
+            ['E', 'F'],
+            ['E', 'D'],
+
+            ['F', 'A'],
+            ['A', 'Z'],
+
+            ['D', 'Z'],
+            ['D', 'Z'],
+
+            ['Z', 'A'],
+            ['Z', 'C'],
+            ['Z', 'G'],
+            ['Z', 'V'],
+            ['V', 'E'],
+            ['Z', 'W'],
+            ]
+    }]
+         
+    })
+          }
+})
+});
+
+  </script>
+{% endblock %}
+</body>
+
+</html>
