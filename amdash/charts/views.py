@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import People
+from .models import People, First_Name, Grouping
 from django.views.generic import TemplateView
 from django .shortcuts import render
 from rest_framework import viewsets
@@ -14,8 +14,6 @@ class ChartData(APIView):
     def get(self, request):
         name = People.objects.all()
         serialized = PeopleSerializer(name, many=True)
-
-                        
         return Response(serialized.data)
 
 def people_network(request):
